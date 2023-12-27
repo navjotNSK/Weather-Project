@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2b2b2b9b;
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .weather-app {
+            text-align: center;
+            background-color: #30313021;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            width: 300px;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #61dafb;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4fa3d1;
+        }
+
+        .weather-info {
+            padding: 20px;
+            background-color: #404040;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (max-width: 600px) {
+            .weather-app {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="weather-app">
+    <div class="search-container">
+        <input type="text" id="cityInput" placeholder="Enter City">
+        <button onclick="getWeather()">Search</button>
+    </div>
+    <div id="weather-info" class="weather-info"></div>
+</div>
+
+<script>
+    function getWeather() {
+        const city = document.getElementById('cityInput').value;
+
+        // Replace this with actual API call to your backend
+        fetch(`http://localhost:9097/publish/${city}`)
+            .then(response => response.json())
+            .then(data => {
+                const weatherInfo = document.getElementById('weather-info');
+                weatherInfo.innerHTML = `
+                    <h2>${data.city}</h2>
+                    <p>Description: ${data.description}</p>
+                    <p>Temperature: ${data.temperature}&deg;C</p>
+                    <p>Humidity: ${data.humidity}%</p>
+                    <p>Wind Speed: ${data.windSpeed} m/s</p>
+                `;
+            })
+            .catch(error => console.error('Error fetching weather:', error));
+    }
+</script>
+
+</body>
+</html>
